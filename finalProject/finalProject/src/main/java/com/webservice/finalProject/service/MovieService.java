@@ -4,6 +4,7 @@ import com.webservice.finalProject.adaptor.OMDbAdaptor;
 import com.webservice.finalProject.dto.MovieDTO;
 import com.webservice.finalProject.dto.MovieSearchResponseDTO;
 import com.webservice.finalProject.model.Movie;
+import com.webservice.finalProject.repository.MovieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,11 +14,14 @@ import java.util.List;
 @Service
 public class MovieService {
 
+    private final MovieRepository movieRepository;
     private final OMDbAdaptor omdbAPIAdaptor;
 
     @Autowired
-    public MovieService(OMDbAdaptor omdbAPIAdaptor) {
+    public MovieService(MovieRepository movieRepository ,OMDbAdaptor omdbAPIAdaptor) {
+
         this.omdbAPIAdaptor = omdbAPIAdaptor;
+        this.movieRepository = movieRepository;
     }
 
     public Movie getMovieInfoByTitle(String title) {
@@ -47,5 +51,9 @@ public class MovieService {
         }
 
         return movies;
+    }
+
+    public List<Movie> getMovies(){
+        return movieRepository.getAllMovies();
     }
 }
