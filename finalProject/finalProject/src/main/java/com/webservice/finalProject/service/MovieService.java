@@ -46,9 +46,6 @@ public class MovieService {
             movies.add(movie);
         }
 
-        System.out.println(movies.size());
-
         return movies;
-
     }
 }
