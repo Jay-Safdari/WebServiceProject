@@ -30,4 +30,9 @@ public class MovieController {
     public List<Movie> getMoviesByTitle(@PathVariable String title) {
         return movieService.getMoviesByTitle(title);
     }
+
+    @GetMapping("/all")
+    public List<Movie> getMoviesAll(){
+        return movieService.getMovies();
+    }
 }
