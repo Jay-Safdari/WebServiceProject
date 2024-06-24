@@ -18,7 +18,7 @@ public class MovieRepository {
     }
 
     public List<Movie> getAllMovies() {
-        String sql = "SELECT * FROM movie";
+        String sql = "SELECT * FROM movies";
         return jdbcTemplate.query(sql, new MovieRowMapper());
     }
 }
