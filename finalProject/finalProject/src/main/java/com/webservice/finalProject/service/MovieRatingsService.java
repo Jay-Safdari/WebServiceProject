@@ -1,4 +1,4 @@
-package com.complete.lastversion.service;
+package com.webservice.finalProject.service;
 
 import com.complete.lastversion.adaptor.OMDbAdaptor;
 import com.complete.lastversion.dto.MovieDTO;
