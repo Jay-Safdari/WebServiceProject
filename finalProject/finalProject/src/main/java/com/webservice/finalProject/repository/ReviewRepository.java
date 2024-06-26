@@ -27,13 +27,4 @@ public class ReviewRepository {
         return jdbcTemplate.queryForObject(sql, new Object[]{id}, new ReviewRowMapper());
     }
 
-    public int saveReview(Review review) {
-        String sql = "INSERT INTO reviews (author, content, movie_id) VALUES (?, ?, ?)";
-        return jdbcTemplate.update(sql, review.getAuthor(), review.getContent(), review.getMovieId());
-    }
-
-    public int deleteReview(Long id) {
-        String sql = "DELETE FROM reviews WHERE id = ?";
-        return jdbcTemplate.update(sql, id);
-    }
 }

@@ -25,12 +25,4 @@ public class ReviewService {
         return reviewRepository.getReviewById(id);
     }
 
-    public Review saveReview(Review review) {
-        reviewRepository.saveReview(review);
-        return review;
-    }
-
-    public void deleteReview(Long id) {
-        reviewRepository.deleteReview(id);
-    }
 }
