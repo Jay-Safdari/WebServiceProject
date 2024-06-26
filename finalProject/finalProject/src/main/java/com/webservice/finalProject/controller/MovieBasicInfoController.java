@@ -3,13 +3,10 @@ package com.webservice.finalProject.controller;
 import com.webservice.finalProject.model.MovieBasicInfo;
 import com.webservice.finalProject.service.MovieBasicInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/movie")
+@RequestMapping("movie")
 public class MovieBasicInfoController {
 
     private final MovieBasicInfoService basicInfoService;
@@ -17,6 +14,11 @@ public class MovieBasicInfoController {
     @Autowired
     public MovieBasicInfoController(MovieBasicInfoService basicInfoService) {
         this.basicInfoService = basicInfoService;
+    }
+
+    @PostMapping("/{title}/basicInfo")
+    public MovieBasicInfo saveBasicInfo(@PathVariable String title) {
+        return basicInfoService.getBasicInfo(title);
     }
 
     @GetMapping("/{title}/basicInfo")
