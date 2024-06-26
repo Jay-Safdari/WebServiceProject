@@ -5,11 +5,8 @@ import lombok.Data;
 
 @Data
 @Builder
-public class Movie {
-
+public class MovieBasicInfo {
     private String title;
+    private String year;
     private String released;
-    private String runtime;
-    private String plot;
-    private String posterLink;
 }

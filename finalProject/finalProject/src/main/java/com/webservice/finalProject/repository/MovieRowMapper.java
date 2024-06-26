@@ -1,7 +1,6 @@
 package com.webservice.finalProject.repository;
 
 
-import com.webservice.finalProject.model.Movie;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
