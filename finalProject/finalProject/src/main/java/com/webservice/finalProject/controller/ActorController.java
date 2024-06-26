@@ -40,5 +40,10 @@ public class ActorController {
     public void deleteActor(@PathVariable int id) {
         actorService.deleteActor(id);
     }
+
+    @GetMapping("/name/{firstName}&{lastName}")
+    public List<Actor> getActorsFuzzy(@PathVariable String firstName, @PathVariable String lastName) {
+        return actorService.getActorsFuzzy(firstName,lastName);
+    }
 }
 

@@ -17,7 +17,7 @@ import java.util.List;
 public class ActorRepository {
 
     @Autowired
-    private   JdbcTemplate jdbcTemplate;
+    private JdbcTemplate jdbcTemplate;
 
     private final class ActorRowMapper implements RowMapper<Actor> {
         @Override
@@ -27,7 +27,7 @@ public class ActorRepository {
             actor.setFirstName(rs.getString("first_name"));
             actor.setLastName(rs.getString("last_name"));
             actor.setDateOfBirth(rs.getDate("date_of_birth").toLocalDate());
-            // 需要从 actor_movies 表中获取关联的 movie_ids
+            // need to get  movie_ids FROM actor_movies
             String movieIdsQuery = "SELECT movie_id FROM actor_movies WHERE actor_id = ?";
             List<Integer> movieIds = jdbcTemplate.query(movieIdsQuery, (rs1, rowNum1) -> rs1.getInt("movie_id"), actor.getId());
             actor.setMovieIds(movieIds);
@@ -46,7 +46,7 @@ public class ActorRepository {
 
     }
 
-    public List<Actor> findByNameActors (String firstName, String lastName) {
+    public List<Actor> findByNameActors(String firstName, String lastName) {
         String sql = "SELECT * FROM actors WHERE first_name = ? AND last_name = ?";
         return jdbcTemplate.query(sql, new ActorRowMapper(), firstName, lastName);
     }
@@ -103,38 +103,67 @@ public class ActorRepository {
     private void insertNewActorMovies(Actor actor) {
         String sql = "INSERT INTO actor_movies (actor_id, movie_id) VALUES (?, ?)";
         for (Integer movieId : actor.getMovieIds()) {
-           jdbcTemplate.update(sql, actor.getId(), movieId);
+            jdbcTemplate.update(sql, actor.getId(), movieId);
         }
     }
 
     private void insertExistingActorMovies(Actor actor) {
         String checkSql = "SELECT COUNT(id) FROM actor_movies WHERE actor_id = ? AND movie_id = ?";
         String insertSql = "INSERT INTO actor_movies (actor_id, movie_id) VALUES (?, ?)";
-        if(actor.getMovieIds().size() > 0) {
-        for (Integer movieId : actor.getMovieIds()) {
+        if (!actor.getMovieIds().isEmpty()) {
+            for (Integer movieId : actor.getMovieIds()) {
 
-            Integer existedActorMovies = null;
+                Integer existedActorMovies = null;
 
-            try {
-                existedActorMovies = jdbcTemplate.queryForObject(checkSql, Integer.class, actor.getId(), movieId);
-            } catch (EmptyResultDataAccessException e) {
-                // Handle the case where no result is found
-            } catch (DataAccessException e) {
-                // Handle general data access exceptions
-                System.out.println("Error executing query: " + e.getMessage());
-                return;
+                try {
+                    existedActorMovies = jdbcTemplate.queryForObject(checkSql, Integer.class, actor.getId(), movieId);
+                } catch (EmptyResultDataAccessException e) {
+                    // Handle the case where no result is found
+                } catch (DataAccessException e) {
+                    // Handle general data access exceptions
+                    System.out.println("Error executing query: " + e.getMessage());
+                    return;
+                }
+
+                if (existedActorMovies != null && existedActorMovies == 0) {
+                    jdbcTemplate.update(insertSql, actor.getId(), movieId);
+                }
             }
-
-            if (existedActorMovies != null && existedActorMovies == 0) {
-                jdbcTemplate.update(insertSql, actor.getId(), movieId);
-            }
-        }
         }
     }
 
     private void deleteActorMovies(int actorId) {
         String sql = "DELETE FROM actor_movies WHERE actor_id = ?";
         jdbcTemplate.update(sql, actorId);
+    }
+
+    public List<Actor> findByNameActorsFuzzy(String firstName, String lastName) {
+        if ((firstName == null || firstName.isEmpty()) && (lastName == null || lastName.isEmpty())) {
+            String findAllSql = "SELECT * FROM actors";
+            List<Actor> foundByNameAll = jdbcTemplate.query(findAllSql, new ActorRowMapper());
+            return foundByNameAll;
+        } else {
+            if (firstName == null || firstName.isEmpty()) {
+                String fuzzySql0 = "SELECT * FROM actors WHERE first_name = ? OR last_name = ?";
+                List<Actor> foundByNameFuzzy0 = jdbcTemplate.query(fuzzySql0, new ActorRowMapper(), lastName, lastName);
+                return foundByNameFuzzy0;
+            } else if (lastName == null || lastName.isEmpty()) {
+                String fuzzySql1 = "SELECT * FROM actors WHERE first_name = ? OR last_name = ?";
+                List<Actor> foundByNameFuzzy1 = jdbcTemplate.query(fuzzySql1, new ActorRowMapper(), firstName, firstName);
+                return  foundByNameFuzzy1;
+            } else {
+                String strictSql = "SELECT * FROM actors WHERE first_name = ? OR last_name = ?";
+                List<Actor> foundByNameStrict = jdbcTemplate.query(strictSql, new ActorRowMapper(), firstName, lastName);
+                if(!foundByNameStrict.isEmpty()) {
+                    return foundByNameStrict;
+                }else {
+                    String fuzzySql = "SELECT * FROM actors WHERE first_name LIKE ? OR last_name LIKE ?";
+                    String firstNamePattern = "%" + firstName + "%";
+                    String lastNamePattern = "%" + lastName + "%";
+                    return jdbcTemplate.query(fuzzySql, new ActorRowMapper(),firstNamePattern, lastNamePattern);
+                }
+            }
+        }
     }
 }
 
