@@ -11,9 +11,10 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Repository
 public class ActorRepository {
@@ -140,6 +141,12 @@ public class ActorRepository {
     }
 
 
+    public List<Actor> findByMovieId(int movieId) {
+        String sql = "SELECT a.* FROM actors a JOIN actor_movies b ON a.id = b.actor_id WHERE b.movie_id = ?";
+        return jdbcTemplate.query(sql, new ActorRowMapper(), movieId);
+    }
+
+
 
     public List<Actor> findByNameActorsFuzzy(String firstName, String lastName) {
         Function<String, String> truncateString = s -> s.length() > 2 ? s.substring(0, 2) : s;
@@ -149,12 +156,14 @@ public class ActorRepository {
             return foundByNameAll;
         } else {
             if (firstName == null || firstName.isEmpty()) {
-                String fuzzySql0 = "SELECT * FROM actors WHERE first_name = ? OR last_name = ?";
-                List<Actor> foundByNameFuzzy0 = jdbcTemplate.query(fuzzySql0, new ActorRowMapper(), lastName, lastName);
+                String fuzzySql0 = "SELECT * FROM actors WHERE first_name LIKE ? OR last_name LIKE ?";
+                String lastNamePattern = "%" + truncateString.apply(lastName) + "%";
+                List<Actor> foundByNameFuzzy0 = jdbcTemplate.query(fuzzySql0, new ActorRowMapper(), lastNamePattern, lastNamePattern);
                 return foundByNameFuzzy0;
             } else if (lastName == null || lastName.isEmpty()) {
-                String fuzzySql1 = "SELECT * FROM actors WHERE first_name = ? OR last_name = ?";
-                List<Actor> foundByNameFuzzy1 = jdbcTemplate.query(fuzzySql1, new ActorRowMapper(), firstName, firstName);
+                String fuzzySql1 = "SELECT * FROM actors WHERE first_name LIKE ? OR last_name LIKE ?";
+                String firstNamePattern = "%" + truncateString.apply(firstName) + "%";
+                List<Actor> foundByNameFuzzy1 = jdbcTemplate.query(fuzzySql1, new ActorRowMapper(), firstNamePattern, firstNamePattern);
                 return foundByNameFuzzy1;
             } else {
                 String strictSql = "SELECT * FROM actors WHERE first_name = ? AND last_name = ?";
@@ -162,17 +171,26 @@ public class ActorRepository {
                 if (!foundByNameStrict.isEmpty() && foundByNameStrict.size() > 1) {
                     return foundByNameStrict;
                 } else {
-                    String fuzzySql0 = "SELECT * FROM actors WHERE first_name LIKE ? OR last_name LIKE ?";
-                    String firstNamePattern0 = "%" + truncateString.apply(firstName) + "%";
-                    String lastNamePattern0 = "%" + truncateString.apply(lastName) + "%";
-                    String fuzzySql1 = "SELECT * FROM actors WHERE first_name LIKE ? OR last_name LIKE ?";
-                    String firstNamePattern1 = "%" + truncateString.apply(firstName) + "%";
-                    String lastNamePattern1 = "%" + truncateString.apply(lastName) + "%";
-                    List<Actor> foundActorsFuzzy0 = jdbcTemplate.query(fuzzySql0, new ActorRowMapper(), firstNamePattern0, lastNamePattern0);
-                    List<Actor> foundActorsFuzzy1 = jdbcTemplate.query(fuzzySql1, new ActorRowMapper(), lastNamePattern1, firstNamePattern1);
-                    List<Actor> result = new ArrayList<>(foundActorsFuzzy0);
-                    result.addAll(foundActorsFuzzy1);
-                    return result;
+                    String fuzzySql0 = "SELECT * FROM actors WHERE first_name LIKE ?";
+                    String fuzzySql1 = "SELECT * FROM actors WHERE last_name LIKE ?";
+                    String firstNamePattern = "%" + truncateString.apply(firstName) + "%";
+                    String lastNamePattern = "%" + truncateString.apply(lastName) + "%";
+
+
+                    List<Actor> foundActorsFuzzy0 = jdbcTemplate.query(fuzzySql0, new ActorRowMapper(), firstNamePattern);
+                    List<Actor> foundActorsFuzzy1 = jdbcTemplate.query(fuzzySql0, new ActorRowMapper(), lastNamePattern);
+                    List<Actor> foundActorsFuzzy2 = jdbcTemplate.query(fuzzySql0, new ActorRowMapper(), firstNamePattern);
+                    List<Actor> foundActorsFuzzy3 = jdbcTemplate.query(fuzzySql1, new ActorRowMapper(), lastNamePattern);
+                    List<Actor> resultList0 = Stream.concat(foundActorsFuzzy0.stream(), foundActorsFuzzy1.stream())
+                            .distinct()
+                            .collect(Collectors.toList());
+                    List<Actor> resultList1 = Stream.concat(foundActorsFuzzy2.stream(), foundActorsFuzzy3.stream())
+                            .distinct()
+                            .collect(Collectors.toList());
+                    List<Actor> resultList = Stream.concat(resultList0.stream(),resultList1.stream())
+                            .distinct()
+                            .collect(Collectors.toList());
+                    return resultList;
                 }
             }
         }

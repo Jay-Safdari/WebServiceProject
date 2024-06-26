@@ -45,5 +45,10 @@ public class ActorController {
     public List<Actor> getActorsFuzzy(@PathVariable String firstName, @PathVariable String lastName) {
         return actorService.getActorsFuzzy(firstName,lastName);
     }
+
+    @GetMapping("/movieId/{movieId}")
+    public List<Actor> getActorsByMovieId(@PathVariable long movieId) {
+        return actorService.getActorsByMovieId((int) movieId);
+    }
 }
 

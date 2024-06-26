@@ -41,4 +41,8 @@ public class ActorService {
     public List<Actor> getActorsFuzzy(String firstName, String lastName) {
         return actorRepository.findByNameActorsFuzzy(firstName,lastName);
     }
+
+    public List<Actor> getActorsByMovieId(int movieID) {
+        return actorRepository.findByMovieId(movieID);
+    }
 }
