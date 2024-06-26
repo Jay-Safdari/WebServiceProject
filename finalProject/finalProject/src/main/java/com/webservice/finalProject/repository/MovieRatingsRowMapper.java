@@ -1,4 +1,4 @@
-package com.complete.lastversion.repository;
+package com.webservice.finalProject.repository;
 
 import com.complete.lastversion.model.MovieRatings;
 import org.springframework.jdbc.core.RowMapper;
