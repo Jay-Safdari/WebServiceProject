@@ -1,4 +1,4 @@
-package com.complete.lastversion.controller;
+package com.webservice.finalProject.controller;
 
 import com.complete.lastversion.model.MovieRatings;
 import com.complete.lastversion.service.MovieRatingsService;
