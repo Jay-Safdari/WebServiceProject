@@ -28,4 +28,13 @@ public class ReviewController {
         return reviewService.getAllReviews();
     }
 
+/*    @PostMapping
+    public Review createReview(@RequestBody Review review) {
+        return reviewService.saveReview(review);
+    }
+
+    @DeleteMapping("/{title}")
+    public void deleteReview(@PathVariable Long id) {
+        reviewService.deleteReview(id);
+    }*/
 }
