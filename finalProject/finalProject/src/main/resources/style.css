@@ -1,3 +1,6 @@
+/* Add these styles to your existing style.css */
+
+/* General styles */
 body {
   font-family: Arial, sans-serif;
   font-size: 16px;
@@ -52,4 +55,28 @@ h1 {
   font-size: 30px;
   text-align: center;
   margin-top: 50px; /* Ensure enough space between header and h1 */
+}
+
+/* Styles for table */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+table, th, td {
+  border: 1px solid #000; /* Black border for table, th, and td */
+}
+
+th, td {
+  padding: 10px;
+  text-align: left;
+}
+
+/* Responsive styles */
+@media screen and (max-width: 600px) {
+  /* Adjust table for smaller screens */
+  table {
+      overflow-x: auto;
+  }
 }
