@@ -8,11 +8,19 @@
 </head>
 <body>
     <div class="container">
+        <header>
+            <div class="header-right">
+            <a class="active" href="index.html">Home</a>
+            <a href="movie_production.html">Production</a>
+            </div>
+        </header>
         <h1>Movie Search</h1>
         <div>
             <select id="search-type">
                 <option value="title">Title</option>
                 <option value="author">Author</option>
+                <option value="country">Country</option>
+                <option value="language">Language</option>
             </select>
             <input type="text" id="search-input" placeholder="Enter search keyword">
             <button id="search-button">Search</button>
@@ -31,5 +39,6 @@
         <button id="load-more-button" style="display: none;">Load More</button>
     </div>
     <script src="script.js"></script>
+    <script src="production.js"></script>
 </body>
 </html>
