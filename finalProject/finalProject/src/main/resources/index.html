@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Search</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Movie Search</h1>
+        <div>
+            <select id="search-type">
+                <option value="title">Title</option>
+                <option value="author">Author</option>
+            </select>
+            <input type="text" id="search-input" placeholder="Enter search keyword">
+            <button id="search-button">Search</button>
+        </div>
+        <div>
+            <input type="text" id="specific-search-input" placeholder="Enter specific movie title">
+            <button id="specific-search-button">Search Movie</button>
+        </div>
+        <div id="results"></div>
+        <div id="specific-result" class="specific-result" style="display: none;">
+            <img id="movie-poster" src="" alt="Movie Poster">
+            <div id="movie-details"></div>
+            <button id="fetch-details-button">Fetch Details</button>
+            <button id="save-details-button" style="display: none;">Save Details</button>
+        </div>
+        <button id="load-more-button" style="display: none;">Load More</button>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
