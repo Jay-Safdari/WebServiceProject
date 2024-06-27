@@ -1,3 +1,5 @@
+const HOST = "http://localhost:8080"; 
+
 function addRating() {
     const title = document.getElementById('title').value.trim();
     const imdbRating = document.getElementById('imdbRating').value.trim();
@@ -8,7 +10,7 @@ function addRating() {
         return;
     }
 
-    fetch(`/movie/${title}/ratings`, {
+    fetch(`${HOST}/movie/${title}/ratings`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -36,7 +38,7 @@ function updateRating() {
         return;
     }
 
-    fetch(`/movie/${title}/ratings`, {
+    fetch(`${HOST}/movie/${title}/ratings`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json'
@@ -61,7 +63,7 @@ function deleteRating() {
         return;
     }
 
-    fetch(`/movie/${title}/ratings`, {
+    fetch(`${HOST}/movie/${title}/ratings`, {
         method: 'DELETE',
     })
     .then(response => response.json())
