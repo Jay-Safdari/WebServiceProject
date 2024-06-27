@@ -1,4 +1,4 @@
-package com.complete.lastversion.model;
+package com.webservice.finalProject.model;
 
 import lombok.Builder;
 import lombok.Data;

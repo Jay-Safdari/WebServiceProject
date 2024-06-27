@@ -1,7 +1,7 @@
-package com.complete.lastversion.controller;
+package com.webservice.finalProject.controller;
 
-import com.complete.lastversion.model.MovieMedia;
-import com.complete.lastversion.service.MovieMediaService;
+import com.webservice.finalProject.model.MovieMedia;
+import com.webservice.finalProject.service.MovieMediaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
