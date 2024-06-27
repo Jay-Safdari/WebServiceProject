@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class MovieProductionService {
 
@@ -45,5 +47,14 @@ public class MovieProductionService {
                 .country(movieDTO.getCountry())
                 .build();
     }
+
+    public List<MovieProduction> getProductionsByCountry(String country) {
+        return productionRepository.getProductionsByCountry(country);
+    }
+
+    public List<MovieProduction> getProductionsByLanguage(String language) {
+        return productionRepository.getProductionsByLanguage(language);
+    }
+
 }
 

@@ -5,6 +5,8 @@ import com.webservice.finalProject.service.MovieProductionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("movie")
 public class MovieProductionController {
@@ -25,4 +27,15 @@ public class MovieProductionController {
     public MovieProduction getProduction(@PathVariable String title) {
         return productionService.getProduction(title);
     }
+
+    @GetMapping("/production/country/{country}")
+    public List<MovieProduction> getProductionsByCountry(@PathVariable String country) {
+        return productionService.getProductionsByCountry(country);
+    }
+
+    @GetMapping("/production/language/{language}")
+    public List<MovieProduction> getProductionsByLanguage(@PathVariable String language) {
+        return productionService.getProductionsByLanguage(language);
+    }
+
 }

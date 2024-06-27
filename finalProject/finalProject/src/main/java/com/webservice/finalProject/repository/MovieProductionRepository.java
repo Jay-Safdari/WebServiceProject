@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public class MovieProductionRepository {
 
@@ -24,5 +26,17 @@ public class MovieProductionRepository {
         String sql = "SELECT * FROM movie_production WHERE title = ?";
         return jdbcTemplate.queryForObject(sql, new Object[]{title}, new MovieProductionRowMapper());
     }
+
+    public List<MovieProduction> getProductionsByCountry(String country) {
+        String sql = "SELECT * FROM movie_production WHERE country LIKE ?";
+        return jdbcTemplate.query(sql, new Object[]{"%" + country + "%"}, new MovieProductionRowMapper());
+    }
+
+    public List<MovieProduction> getProductionsByLanguage(String language) {
+        String sql = "SELECT * FROM movie_production WHERE language LIKE ?";
+        return jdbcTemplate.query(sql, new Object[]{"%" + language + "%"}, new MovieProductionRowMapper());
+    }
+
 }
+
 
