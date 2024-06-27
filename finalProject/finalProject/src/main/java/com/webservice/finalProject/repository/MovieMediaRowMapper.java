@@ -1,6 +1,6 @@
-package com.complete.lastversion.repository;
+package com.webservice.finalProject.repository;
 
-import com.complete.lastversion.model.MovieMedia;
+import com.webservice.finalProject.model.MovieMedia;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;

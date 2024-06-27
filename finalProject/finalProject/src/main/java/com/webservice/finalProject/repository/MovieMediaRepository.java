@@ -1,6 +1,6 @@
-package com.complete.lastversion.repository;
+package com.webservice.finalProject.repository;
 
-import com.complete.lastversion.model.MovieMedia;
+import com.webservice.finalProject.model.MovieMedia;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -22,7 +22,7 @@ public class MovieMediaRepository {
 
     public MovieMedia findByTitle(String title) {
         String sql = "SELECT * FROM movie_media WHERE title = ?";
-        return jdbcTemplate.queryForObject(sql, new Object[]{title}, new MovieMediaRowMapper());
+        return jdbcTemplate.queryForObject(sql,  new MovieMediaRowMapper(),title);
     }
 }
 
