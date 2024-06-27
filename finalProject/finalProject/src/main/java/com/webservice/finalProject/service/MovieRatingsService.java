@@ -1,9 +1,9 @@
 package com.webservice.finalProject.service;
 
-import com.complete.lastversion.adaptor.OMDbAdaptor;
-import com.complete.lastversion.dto.MovieDTO;
-import com.complete.lastversion.model.MovieRatings;
-import com.complete.lastversion.repository.MovieRatingsRepository;
+import com.webservice.finalProject.adaptor.OMDbAdaptor;
+import com.webservice.finalProject.dto.MovieDTO;
+import com.webservice.finalProject.model.MovieRatings;
+import com.webservice.finalProject.repository.MovieRatingsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;

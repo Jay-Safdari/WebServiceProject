@@ -1,6 +1,7 @@
 package com.webservice.finalProject.repository;
 
-import com.complete.lastversion.model.MovieRatings;
+
+import com.webservice.finalProject.model.MovieRatings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
