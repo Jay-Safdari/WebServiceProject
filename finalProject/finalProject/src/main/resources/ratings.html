@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add, Modify, Delete Movie Ratings</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-right">
+                <a href="index.html">Home</a>
+                <a href="movie_production.html">Production</a>
+                <a class="active" href="movie_ratings.html">Ratings</a>
+            </div>
+        </header>
+
+        <h1>Add, Modify, Delete Movie Ratings</h1>
+        
+        <label for="title">Title:</label>
+        <input type="text" id="title" placeholder="Enter movie title...">
+        <br><br>
+
+        <label for="imdbRating">IMDb Rating:</label>
+        <input type="text" id="imdbRating" placeholder="Enter IMDb rating...">
+        <br><br>
+
+        <label for="imdbVotes">IMDb Votes:</label>
+        <input type="text" id="imdbVotes" placeholder="Enter IMDb votes...">
+        <br><br>
+
+        <button onclick="addRating()">Add Rating</button>
+        <button onclick="updateRating()">Update Rating</button>
+        <button onclick="deleteRating()">Delete Rating</button>
+    </div>
+
+    <script src="manage-ratings.js"></script>
+</body>
+</html>
