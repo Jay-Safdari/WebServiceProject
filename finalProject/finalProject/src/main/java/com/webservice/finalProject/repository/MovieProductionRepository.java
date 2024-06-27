@@ -42,6 +42,11 @@ public class MovieProductionRepository {
         return jdbcTemplate.query(sql, new Object[]{"%" + language + "%"}, new MovieProductionRowMapper());
     }
 
+    public Long addProduction (MovieProduction movieProduction) {
+        String sql = "INSERT INTO movie_production (title, director, production, language, country) VALUES (?, ?, ?, ?, ?)";
+        jdbcTemplate.update(sql, movieProduction.getTitle(), movieProduction.getDirector(), movieProduction.getProduction(), movieProduction.getLanguage(), movieProduction.getCountry());
+        return jdbcTemplate.queryForObject("SELECT MAX(id) from movie_production", Long.class);
+    }
 
     public void updateProduction(Long id, MovieProduction prod){
         String sql = "UPDATE movie_production set title=?, director =?, production=? , language=?, country=? WHERE id=?";

@@ -57,6 +57,10 @@ public class MovieProductionService {
         return productionRepository.getProductionsByLanguage(language);
     }
 
+    public long addProduction(MovieProduction prod) {
+        return productionRepository.addProduction(prod);
+    }
+
 
     public void deleteProduction(Long id){
 

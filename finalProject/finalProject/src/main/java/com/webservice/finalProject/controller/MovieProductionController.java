@@ -41,6 +41,15 @@ public class MovieProductionController {
         return productionService.getProductionsByLanguage(language);
     }
 
+    @PostMapping("/production/")
+    public ResponseEntity<Long> addProduction(@RequestBody MovieProduction prod){
+        try{
+            return new ResponseEntity<>(productionService.addProduction(prod),HttpStatus.CREATED);
+        }
+        catch (Exception exception){
+            return new ResponseEntity(exception.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
 
     @PutMapping("/{id}")
     public ResponseEntity<Void> updateProduction(@PathVariable Long id, @RequestBody MovieProduction prod){

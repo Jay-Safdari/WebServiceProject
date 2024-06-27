@@ -1,7 +1,7 @@
 package com.webservice.finalProject.controller;
 
-import com.complete.lastversion.model.MovieRatings;
-import com.complete.lastversion.service.MovieRatingsService;
+import com.webservice.finalProject.model.MovieRatings;
+import com.webservice.finalProject.service.MovieRatingsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
