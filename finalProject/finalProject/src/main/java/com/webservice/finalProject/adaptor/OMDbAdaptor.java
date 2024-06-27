@@ -1,6 +1,6 @@
-package com.complete.lastversion.adaptor;
+package com.webservice.finalProject.adaptor;
 
-import com.complete.lastversion.dto.MovieDTO;
+import com.webservice.finalProject.dto.MovieDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;

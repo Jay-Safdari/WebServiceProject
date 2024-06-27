@@ -1,4 +1,4 @@
-package com.complete.lastversion.config;
+package com.webservice.finalProject.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

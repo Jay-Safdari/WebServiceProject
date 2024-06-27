@@ -1,8 +1,8 @@
-package com.complete.lastversion.service;
+package com.webservice.finalProject.service;
 
-import com.complete.lastversion.adaptor.OMDbAdaptor;
-import com.complete.lastversion.dto.MovieDTO;
-import com.complete.lastversion.model.MovieMedia;
+import com.webservice.finalProject.adaptor.OMDbAdaptor;
+import com.webservice.finalProject.dto.MovieDTO;
+import com.webservice.finalProject.model.MovieMedia;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

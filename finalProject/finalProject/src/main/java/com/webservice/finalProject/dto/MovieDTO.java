@@ -1,4 +1,4 @@
-package com.complete.lastversion.dto;
+package com.webservice.finalProject.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
