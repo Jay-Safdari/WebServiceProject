@@ -3,6 +3,7 @@ package com.webservice.finalProject.service;
 
 import com.webservice.finalProject.adaptor.OMDbAdaptor;
 import com.webservice.finalProject.dto.MovieDTO;
+import com.webservice.finalProject.exception.productionNotFoundException;
 import com.webservice.finalProject.model.MovieProduction;
 import com.webservice.finalProject.repository.MovieProductionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,6 +55,24 @@ public class MovieProductionService {
 
     public List<MovieProduction> getProductionsByLanguage(String language) {
         return productionRepository.getProductionsByLanguage(language);
+    }
+
+
+    public void deleteProduction(Long id){
+
+        if(productionRepository.findByID(id) == null){
+            //throw exception
+            throw new productionNotFoundException(id);
+        }
+        productionRepository.deleteProduction(id);
+    }
+
+    public void updateProduction(Long id, MovieProduction prod){
+        if(productionRepository.findByID(id) == null){
+            //throw exception
+            throw new productionNotFoundException(id);
+        }
+        productionRepository.updateProduction(id, prod);
     }
 
 }
