@@ -45,4 +45,6 @@ public class MovieDTO {
     @JsonProperty("imdbVotes")
     private String imdbVotes;
 
+    @JsonProperty("Production")
+    private String production;
 }
