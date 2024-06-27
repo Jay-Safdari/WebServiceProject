@@ -16,7 +16,6 @@ public class OMDbAdaptor {
 
     @Autowired
     public OMDbAdaptor(RestTemplate restTemplate) {
-
         this.restTemplate = restTemplate;
     }
 
@@ -27,7 +26,6 @@ public class OMDbAdaptor {
     private String apiKey;
 
     public MovieDTO getMovieInfoByTitle(final String title) {
-
         final String route = apiURL.concat("?apikey={key}&t={title}");
 
         Map<String, String> parameters = new HashMap<>();
@@ -35,9 +33,5 @@ public class OMDbAdaptor {
         parameters.put("title", title);
 
         return restTemplate.getForObject(route, MovieDTO.class, parameters);
-
     }
-
-
-
 }
