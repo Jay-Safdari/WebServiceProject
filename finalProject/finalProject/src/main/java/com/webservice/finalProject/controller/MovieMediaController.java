@@ -17,8 +17,8 @@ public class MovieMediaController {
     }
 
     @PostMapping("/{title}/media")
-    public MovieMedia saveMedia(@PathVariable String title) {
-        return mediaService.saveMedia(title);
+    public MovieMedia saveMedia(@PathVariable String title,@RequestBody MovieMedia movieMedia) {
+        return mediaService.saveMedia(title, movieMedia);
     }
 
     @GetMapping("/{title}/media")

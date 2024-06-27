@@ -20,18 +20,24 @@ public class MovieMediaService {
         this.mediaRepository = mediaRepository;
     }
 
-    public MovieMedia saveMedia(String title) {
+    public MovieMedia saveMedia(String title, MovieMedia movieMedia) {
         MovieDTO movieDTO = omdbAdaptor.getMovieInfoByTitle(title);
-        MovieMedia media = extractMedia(movieDTO);
-        mediaRepository.save(media);
-        return media;
+        movieDTO.setPosterLink(movieMedia.getPosterLink());
+        MovieMedia NewMovieMedia = extractMedia(movieDTO);
+        NewMovieMedia.setPosterLink(movieMedia.getPosterLink());
+        mediaRepository.save(NewMovieMedia);
+        return NewMovieMedia;
     }
 
     public MovieMedia getMedia(String title) {
         try {
             return mediaRepository.findByTitle(title);
         } catch (EmptyResultDataAccessException e) {
-            return saveMedia(title);
+            MovieMedia nullMovieMedia = MovieMedia.builder()
+                    .title(title)
+                    .posterLink("")
+                    .build();
+            return saveMedia(title,nullMovieMedia);
         }
     }
 
