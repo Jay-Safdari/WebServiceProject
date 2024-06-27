@@ -25,4 +25,9 @@ public class MovieProductionController {
     public MovieProduction getProduction(@PathVariable String title) {
         return productionService.getProduction(title);
     }
+
+    @GetMapping("/production/{country}")
+    public MovieProduction getProductionByCountry(@PathVariable String country) {
+        return productionService.getProductionByCountry(country);
+    }
 }

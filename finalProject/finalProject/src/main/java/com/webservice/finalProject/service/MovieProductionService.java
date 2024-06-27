@@ -45,5 +45,9 @@ public class MovieProductionService {
                 .country(movieDTO.getCountry())
                 .build();
     }
+
+    public MovieProduction getProductionByCountry(String country){
+        return productionRepository.getProductionByCountry(country);
+    }
 }
 

@@ -24,5 +24,12 @@ public class MovieProductionRepository {
         String sql = "SELECT * FROM movie_production WHERE title = ?";
         return jdbcTemplate.queryForObject(sql, new Object[]{title}, new MovieProductionRowMapper());
     }
+
+    public MovieProduction getProductionByCountry(String country) {
+        String sql = "SELECT * FROM movie_production WHERE country = ?";
+        return jdbcTemplate.queryForObject(sql, new Object[]{country}, new MovieProductionRowMapper());
+    }
+
 }
+
 
