@@ -24,6 +24,20 @@
             <input type="text" id="search-input" placeholder="Enter search keyword">
             <button id="search-button">Search</button>
         </div>
+        
+        <div>
+            <form id="search-title-form">
+                <label for="title-search-input">Enter a word in movie title:</label>
+                <input type="text" id="title-search-input" placeholder="Enter search keyword">
+                <button type="submit" id="title-search-button">Search</button>
+            </form>
+        </div>
+        
+        <div id="search-results" style="display: none;">
+          <h2>Search Results</h2>
+          <ul id="movies-list"></ul>
+        </div>
+          
 
         <div id="results"></div>
         <div id="specific-result" class="specific-result" style="display: none;">

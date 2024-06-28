@@ -2,6 +2,62 @@ const HOST = "http://localhost:8080";
 
 document.getElementById('search-button').addEventListener('click', searchMovies);
 
+document.getElementById('search-title-form').addEventListener('submit', function(event) {
+    event.preventDefault(); // Prevent default form submission
+    searchMoviesByTitle();
+});
+
+function searchMoviesByTitle() {
+    var searchTerm = document.getElementById('title-search-input').value.trim();
+
+    if (searchTerm === '') {
+        alert('Please enter a search keyword.');
+        return;
+    }
+
+    fetchMoviesByTitle(searchTerm);
+}
+
+function fetchMoviesByTitle(title) {
+    const url = `${HOST}/movie/list/${encodeURIComponent(title)}`;
+    
+    fetch(url)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(movies => {
+            console.log('Movies found:', movies);
+            displayMoviesList(movies);
+        })
+        .catch(error => {
+            console.error('Fetch error:', error);
+            alert('Error fetching movies by title. Please try again later.');
+        });
+}
+
+function displayMoviesList(movies) {
+    var moviesList = document.getElementById('movies-list');
+    moviesList.innerHTML = ''; // Clear existing list
+
+    if (movies.length === 0) {
+        var noResultsItem = document.createElement('li');
+        noResultsItem.textContent = 'No movies found.';
+        moviesList.appendChild(noResultsItem);
+    } else {
+        movies.forEach(movie => {
+            var listItem = document.createElement('li');
+            listItem.textContent = movie.titleList;
+            moviesList.appendChild(listItem);
+        });
+    }
+
+    // Show the results section
+    document.getElementById('search-results').style.display = 'block';
+}
+
 function searchMovies() {
     var searchType = document.getElementById('search-type').value;
     var searchTerm = document.getElementById('search-input').value.trim();
@@ -198,3 +254,4 @@ function displayMovieDetails(basicInfo, details, ratings, media) {
         ratingList.appendChild(li);
     });
 }
+
