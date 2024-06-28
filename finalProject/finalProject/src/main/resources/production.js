@@ -17,12 +17,43 @@ function searchMovies() {
     } else if (searchType === 'language') {
         endpoint = `${HOST}/movie/production/language/${encodeURIComponent(searchTerm)}`;
     } else if (searchType === 'title') {
-        endpoint = `${HOST}/movie/${encodeURIComponent(searchTerm)}/basicInfo`;
+        // Fetch basic info and details separately for 'title' search
+        var basicInfoEndpoint = `${HOST}/movie/${encodeURIComponent(searchTerm)}/basicInfo`;
+        var detailsEndpoint = `${HOST}/movie/${encodeURIComponent(searchTerm)}/details`;
+
+        // Make both fetch requests concurrently using Promise.all
+        Promise.all([
+            fetch(basicInfoEndpoint),
+            fetch(detailsEndpoint)
+        ])
+        .then(responses => {
+            // Check if both responses are successful
+            if (!responses[0].ok || !responses[1].ok) {
+                throw new Error('HTTP error! Status: ' + responses[0].status + ' or ' + responses[1].status);
+            }
+            // Parse responses as JSON
+            return Promise.all(responses.map(response => response.json()));
+        })
+        .then(data => {
+            // Log the data received
+            console.log('Data received:', data);
+            // Display basic info and details
+            displayMovieDetails(data[0], data[1]);
+        })
+        .catch(error => {
+            // Log fetch error for debugging
+            console.error('Fetch error:', error);
+            // Alert user about the error
+            alert('Error fetching movie details. Please try again later.');
+        });
+
+        return; // Exit function early to avoid further execution
     } else {
         alert('Invalid search type.'); // Handle invalid search type gracefully
         return;
     }
-
+    
+    // Handle other search types (country, language) here
     fetch(endpoint)
         .then(response => {
             if (!response.ok) {
@@ -32,11 +63,7 @@ function searchMovies() {
         })
         .then(data => {
             console.log('Data received:', data); // Log the data received
-            if (searchType === 'title') {
-                displayMovieDetails(data); // Display detailed view for movie search
-            } else {
-                displayResults(data); // Display list view for production search
-            }
+            displayResults(data); // Display list view for production search
         })
         .catch(error => {
             console.error('Fetch error:', error); // Log fetch error for debugging
@@ -104,28 +131,41 @@ function displayResults(movies) {
     }
 }
 
-function displayMovieDetails(movieDetails) {
+function displayMovieDetails(basicInfo, details) {
     var resultsDiv = document.getElementById('results');
     resultsDiv.innerHTML = ''; // Clear existing results
 
-    var ul = document.createElement('ul');
-    ul.setAttribute('id', 'movies-list');
-    resultsDiv.appendChild(ul);
+    // Create a container for details
+    var detailsContainer = document.createElement('div');
+    resultsDiv.appendChild(detailsContainer);
 
-    var details = [
-        { label: 'Movie Title', value: movieDetails.title },
-        { label: 'Runtime', value: movieDetails.runtime },
-        { label: 'Genre', value: movieDetails.genre },
-        { label: 'Plot', value: movieDetails.plot }
+    // Display basic info
+    var basicInfoList = document.createElement('ul');
+    detailsContainer.appendChild(basicInfoList);
+
+    var basicInfoItems = [
+        { label: 'Movie Title', value: basicInfo.title },
+        { label: 'Release date', value: basicInfo.released }
     ];
 
-    details.forEach(detail => {
+    basicInfoItems.forEach(item => {
         var li = document.createElement('li');
-        var label = document.createElement('span');
-        label.textContent = detail.label + ': ';
-        label.style.fontWeight = 'bold';
-        li.appendChild(label);
-        li.appendChild(document.createTextNode(detail.value));
-        ul.appendChild(li);
+        li.textContent = `${item.label}: ${item.value}`;
+        basicInfoList.appendChild(li);
+    });
+
+    // Display additional details
+    var detailsList = document.createElement('ul');
+    detailsContainer.appendChild(detailsList);
+
+    var detailsItems = [
+        { label: 'Genre', value: details.genre },
+        { label: 'Plot', value: details.plot }
+    ];
+
+    detailsItems.forEach(item => {
+        var li = document.createElement('li');
+        li.textContent = `${item.label}: ${item.value}`;
+        detailsList.appendChild(li);
     });
 }
