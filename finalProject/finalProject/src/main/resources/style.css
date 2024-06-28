@@ -17,20 +17,12 @@ body {
   border: 1px solid #ccc;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  position: relative; /* Ensure relative positioning for child elements */
+  position: relative;
 }
 
 header {
-  position: absolute;
-  top: 0;
-  right: 0;
   padding: 10px 0;
-}
-
-.header-right {
-  float: right;
-  margin-top: 10px;
-  margin-right: 10px;
+  text-align: right;
 }
 
 .header-right a {
@@ -52,10 +44,39 @@ header {
 h1 {
   font-size: 30px;
   text-align: center;
-  margin-top: 50px; /* Ensure enough space between header and h1 */
+  margin-top: 50px;
 }
 
-/* Styles for table */
+/* Form and input styles */
+select, input[type="text"], button {
+  padding: 10px;
+  margin: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+select {
+  width: 30%;
+}
+
+input[type="text"] {
+  width: 60%;
+}
+
+button {
+  cursor: pointer;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+/* Table styles */
 table {
   width: 100%;
   border-collapse: collapse;
@@ -63,7 +84,7 @@ table {
 }
 
 table, th, td {
-  border: 1px solid #000; /* Black border for table, th, and td */
+  border: 1px solid #000;
 }
 
 th, td {
@@ -75,17 +96,48 @@ th, td {
 @media screen and (max-width: 600px) {
   /* Adjust table for smaller screens */
   table {
-      overflow-x: auto;
+    overflow-x: auto;
+  }
+
+  /* Responsive adjustments for form inputs */
+  select {
+    width: 100%;
+  }
+
+  input[type="text"] {
+    width: 100%;
   }
 }
 
-/* Additional styles for specific elements */
+/* Additional styles */
 ul {
-  list-style-type: none; /* Remove bullets from ul */
+  list-style-type: none;
+  padding: 0;
 }
 
 ul li {
-  font-size: 15px; /* Larger font size for list items */
-  font-weight: bold; /* Bold font weight for list items */
-  margin-bottom: 8px; /* Spacing between list items */
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+
+#results {
+  margin-top: 20px;
+}
+
+#specific-result {
+  margin-top: 20px;
+  text-align: center;
+}
+
+#specific-result button {
+  margin-top: 10px;
+  padding: 8px 16px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+}
+
+#specific-result button:hover {
+  background-color: #0056b3;
 }

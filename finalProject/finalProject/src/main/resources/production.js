@@ -17,19 +17,25 @@ function searchMovies() {
     } else if (searchType === 'language') {
         endpoint = `${HOST}/movie/production/language/${encodeURIComponent(searchTerm)}`;
     } else if (searchType === 'title') {
-        // Fetch basic info and details separately for 'title' search
+        // Fetch basic info, details, ratings, production and media separately for 'title' search
         var basicInfoEndpoint = `${HOST}/movie/${encodeURIComponent(searchTerm)}/basicInfo`;
         var detailsEndpoint = `${HOST}/movie/${encodeURIComponent(searchTerm)}/details`;
+        var ratingsEndpoint = `${HOST}/movie/${encodeURIComponent(searchTerm)}/ratings`;
+        var productionEndpoint = `${HOST}/movie/${encodeURIComponent(searchTerm)}/production`;
+        var mediaEndpoint = `${HOST}/movie/${encodeURIComponent(searchTerm)}/media`;
 
-        // Make both fetch requests concurrently using Promise.all
+        // Make all fetch requests concurrently using Promise.all
         Promise.all([
             fetch(basicInfoEndpoint),
-            fetch(detailsEndpoint)
+            fetch(detailsEndpoint),
+            fetch(ratingsEndpoint),
+            fetch(productionEndpoint),
+            fetch(mediaEndpoint)
         ])
         .then(responses => {
-            // Check if both responses are successful
-            if (!responses[0].ok || !responses[1].ok) {
-                throw new Error('HTTP error! Status: ' + responses[0].status + ' or ' + responses[1].status);
+            // Check if all responses are successful
+            if (!responses.every(response => response.ok)) {
+                throw new Error('HTTP error! One or more requests failed.');
             }
             // Parse responses as JSON
             return Promise.all(responses.map(response => response.json()));
@@ -37,8 +43,8 @@ function searchMovies() {
         .then(data => {
             // Log the data received
             console.log('Data received:', data);
-            // Display basic info and details
-            displayMovieDetails(data[0], data[1]);
+            // Display basic info, details, ratings, and media
+            displayMovieDetails(data[0], data[1], data[2], data[4]); // Assuming data[4] is media object
         })
         .catch(error => {
             // Log fetch error for debugging
@@ -131,13 +137,21 @@ function displayResults(movies) {
     }
 }
 
-function displayMovieDetails(basicInfo, details) {
+function displayMovieDetails(basicInfo, details, ratings, media) {
     var resultsDiv = document.getElementById('results');
     resultsDiv.innerHTML = ''; // Clear existing results
 
     // Create a container for details
     var detailsContainer = document.createElement('div');
     resultsDiv.appendChild(detailsContainer);
+
+    // Display movie poster (media)
+    if (media && media.posterLink) {
+        var posterImg = document.createElement('img');
+        posterImg.src = media.posterLink;
+        posterImg.alt = basicInfo.title; // Set alt attribute for accessibility
+        detailsContainer.appendChild(posterImg);
+    }
 
     // Display basic info
     var basicInfoList = document.createElement('ul');
@@ -167,5 +181,20 @@ function displayMovieDetails(basicInfo, details) {
         var li = document.createElement('li');
         li.textContent = `${item.label}: ${item.value}`;
         detailsList.appendChild(li);
+    });
+
+    // Display ratings
+    var ratingList = document.createElement('ul');
+    detailsContainer.appendChild(ratingList);
+
+    var ratingItems = [
+        { label: 'IMDB Rating', value: ratings.imdbRating },
+        { label: 'Quantity of IMDB Votes', value: ratings.imdbVotes }
+    ];
+
+    ratingItems.forEach(item => {
+        var li = document.createElement('li');
+        li.textContent = `${item.label}: ${item.value}`;
+        ratingList.appendChild(li);
     });
 }
