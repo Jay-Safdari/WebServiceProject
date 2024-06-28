@@ -7,6 +7,13 @@ document.getElementById('search-title-form').addEventListener('submit', function
     searchMoviesByTitle();
 });
 
+function clearResults() {
+    document.getElementById('results').innerHTML = '';
+    document.getElementById('movies-list').innerHTML = '';
+    document.getElementById('search-results').style.display = 'none';
+    document.getElementById('specific-result').style.display = 'none';
+}
+
 function searchMoviesByTitle() {
     var searchTerm = document.getElementById('title-search-input').value.trim();
 
@@ -15,6 +22,7 @@ function searchMoviesByTitle() {
         return;
     }
 
+    clearResults();
     fetchMoviesByTitle(searchTerm);
 }
 
@@ -66,6 +74,8 @@ function searchMovies() {
         alert('Please enter a ' + searchType + ' name.');
         return;
     }
+
+    clearResults();
 
     var endpoint = '';
     if (searchType === 'country') {
