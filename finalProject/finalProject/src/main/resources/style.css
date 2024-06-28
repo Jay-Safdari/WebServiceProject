@@ -29,11 +29,14 @@ header {
   color: #333;
   text-decoration: none;
   padding: 10px;
+  border-radius: 4px;
+  transition: background-color 0.3s, color 0.3s;
 }
 
 .header-right a.active {
   background-color: #007bff;
   color: #fff;
+  
 }
 
 .header-right a:hover {
@@ -57,7 +60,7 @@ select, input[type="text"], button {
 }
 
 select {
-  width: 30%;
+  flex: 0 0 30%;
 }
 
 input[type="text"] {
@@ -140,4 +143,11 @@ ul li {
 
 #specific-result button:hover {
   background-color: #0056b3;
+}
+
+label {
+  font-weight: 500;
+  margin-top: 15px;
+  display:table;
+  color: #495057;
 }
