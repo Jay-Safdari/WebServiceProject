@@ -1,4 +1,4 @@
-const HOST = "http://localhost:8080"; // Replace with your actual backend host
+const HOST = "http://localhost:8080";
 
 document.getElementById('search-button').addEventListener('click', searchMovies);
 
@@ -16,6 +16,11 @@ function searchMovies() {
         endpoint = `${HOST}/movie/production/country/${encodeURIComponent(searchTerm)}`;
     } else if (searchType === 'language') {
         endpoint = `${HOST}/movie/production/language/${encodeURIComponent(searchTerm)}`;
+    } else if (searchType === 'title') {
+        endpoint = `${HOST}/movie/${encodeURIComponent(searchTerm)}/basicInfo`;
+    } else {
+        alert('Invalid search type.'); // Handle invalid search type gracefully
+        return;
     }
 
     fetch(endpoint)
@@ -27,15 +32,17 @@ function searchMovies() {
         })
         .then(data => {
             console.log('Data received:', data); // Log the data received
-            displayResults(data);
+            if (searchType === 'title') {
+                displayMovieDetails(data); // Display detailed view for movie search
+            } else {
+                displayResults(data); // Display list view for production search
+            }
         })
         .catch(error => {
             console.error('Fetch error:', error); // Log fetch error for debugging
             alert('Error fetching movies. Please try again later.');
         });
 }
-
-
 
 function displayResults(movies) {
     var resultsDiv = document.getElementById('results');
@@ -95,4 +102,30 @@ function displayResults(movies) {
             tableBody.appendChild(row);
         });
     }
+}
+
+function displayMovieDetails(movieDetails) {
+    var resultsDiv = document.getElementById('results');
+    resultsDiv.innerHTML = ''; // Clear existing results
+
+    var ul = document.createElement('ul');
+    ul.setAttribute('id', 'movies-list');
+    resultsDiv.appendChild(ul);
+
+    var details = [
+        { label: 'Movie Title', value: movieDetails.title },
+        { label: 'Runtime', value: movieDetails.runtime },
+        { label: 'Genre', value: movieDetails.genre },
+        { label: 'Plot', value: movieDetails.plot }
+    ];
+
+    details.forEach(detail => {
+        var li = document.createElement('li');
+        var label = document.createElement('span');
+        label.textContent = detail.label + ': ';
+        label.style.fontWeight = 'bold';
+        li.appendChild(label);
+        li.appendChild(document.createTextNode(detail.value));
+        ul.appendChild(li);
+    });
 }
